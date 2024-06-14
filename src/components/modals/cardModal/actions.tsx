@@ -19,41 +19,51 @@ const Actions = ({ data }: ActionsProps) => {
   const cardModal = useCardModal();
   const { toast } = useToast();
 
-  const { execute: executeCopyCard, isLoading: isLoadingCopy } =
-    useAction(copyCard, {
-      onSuccess: (data) => {
-        toast ({description: (
+  const { execute: executeCopyCard, isLoading: isLoadingCopy } = useAction(copyCard, {
+    onSuccess: () => {
+      toast({
+        description: (
           <div className={"flex flex-row items-center "}>
             Card copied
           </div>
         ),
       });
     }
-    });
-  
-  const { execute: executeDeleteCard, isLoading: isLoadingDelete } =
-  useAction(deleteCard, {
-    onSuccess: (data) => {
-      toast ({description: (
-        <div className={"flex flex-row items-center "}>
-          Card deleted
-        </div>
-      ),
-    });
-    cardModal.onClose();
-  }
+  });
+
+  const { execute: executeDeleteCard, isLoading: isLoadingDelete } = useAction(deleteCard, {
+    onSuccess: () => {
+      toast({
+        description: (
+          <div className={"flex flex-row items-center "}>
+            Card deleted
+          </div>
+        ),
+      });
+      cardModal.onClose();
+    }
   });
 
   const onCopy = () => {
+    if (!data) {
+      toast({ description: "No data available to copy." });
+      return;
+    }
+
     const boardId = params.boardId as string;
 
     executeCopyCard({
-      id: data.id, 
+      id: data.id,
       boardId,
     });
   };
 
   const onDelete = () => {
+    if (!data) {
+      toast({ description: "No data available to delete." });
+      return;
+    }
+
     const boardId = params.boardId as string;
 
     executeDeleteCard({
