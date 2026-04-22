@@ -61,7 +61,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     })
   } catch (e) {
     // Handling errors if card copy fails
-    return { error: "Failed to copy." };
+    return { error: "Failed to copy an empty list." };
   }
 
   // Revalidating the cache for the board path
