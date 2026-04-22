@@ -22,10 +22,11 @@ export async function generateMetadata({
   const { orgId } = auth();
 
   // Fetch the board details based on board ID and organization ID
-  const board = await fetchBoard(boardId, orgId!);
+  if (!orgId) return { title: "Board" };
+  const board = await fetchBoard(boardId, orgId);
 
   // generate metadata
-  return { title: startCase(board?.title!) || "Board" };
+  return { title: board?.title ? startCase(board.title) : "Board" };
 }
 
 // Layout component for board
